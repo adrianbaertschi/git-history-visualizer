@@ -1,0 +1,25 @@
+{
+  "name": "git-js-vis",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "start": "webpack serve"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "d3": "^6.7.0",
+    "isomorphic-git": "^1.8.2"
+  },
+  "devDependencies": {
+    "@types/d3": "^6.7.0",
+    "html-webpack-plugin": "^5.3.1",
+    "ts-loader": "^9.2.2",
+    "typescript": "^4.3.2",
+    "webpack": "^5.37.1",
+    "webpack-cli": "^4.7.0",
+    "webpack-dev-server": "^3.11.2"
+  }
+}
