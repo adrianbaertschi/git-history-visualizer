@@ -1,23 +1,8 @@
 import * as d3 from "d3";
+import {demoData} from "./file-parser";
 
-let values = Array(5);
-let randomGenerator = d3.randomInt(0, 100);
-for (let i = 0; i < 5; i++) {
-    values[i] = randomGenerator();
-}
 
-d3.select("body")
-    .append("div")
-    .selectAll("div")
-    .data(values)
-    .join("div")
-    .style("background", "steelblue")
-    .style("padding", "3px")
-    .style("margin", "1px")
-    .style("width", d => `${d * 10}px`)
-    .text(d => d);
-
-const data = {
+const dummyData = {
     name: "root",
     children: [
         {name: "child #1"},
@@ -31,6 +16,8 @@ const data = {
         }
     ]
 };
+const data = demoData()
+
 
 function tree(data: any) {
     const root: any = d3.hierarchy(data);
