@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import {demoData} from "./file-parser";
+import {demoData, Tree} from "./file-parser";
 
 
 const dummyData = {
@@ -16,26 +16,16 @@ const dummyData = {
         }
     ]
 };
-const data = demoData()
-
-
-function tree(data: any) {
-    const root: any = d3.hierarchy(data);
-    root.dx = 10;
-    root.dy = width / (root.height + 1);
-    return d3.tree().nodeSize([root.dx, root.dy])(root);
-}
 
 // set the dimensions and margins of the diagram
 const margin = {top: 20, right: 120, bottom: 30, left: 90};
 const width = 660 - margin.left - margin.right;
 const height = 500 - margin.top - margin.bottom;
 
-let nodes = tree(data);
 
-
-// maps the node data to the tree layout
-d3.tree().size([height, width])(nodes);
+const data: Tree = dummyData;
+const rootNode = d3.hierarchy(data);
+let nodes = d3.tree().size([height, width])(rootNode);
 
 const svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -57,8 +47,8 @@ g.append("g")
 
 // adds each node as a group
 const node = g.selectAll(".node")
-    .data(nodes.descendants())
-    .enter().append("g")
+    .data(nodes.descendants(), )
+    .join("g")
     .attr("transform", d => `translate(${d.y},${d.x})`);
 
 // adds the circle to the node
