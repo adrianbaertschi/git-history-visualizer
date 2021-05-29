@@ -18,3 +18,6 @@ https://gource.io/
 https://github.com/d3/d3-hierarchy/blob/master/README.md#tree
 
 https://observablehq.com/tutorials
+
+https://observablehq.com/@d3/radial-tidy-tree?collection=@d3/d3-hierarchy
+https://observablehq.com/@d3/force-directed-tree?collection=@d3/d3-hierarchy

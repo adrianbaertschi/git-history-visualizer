@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     mode: 'development',
-    entry: './src/explore-d3.ts',
+    entry: './src/main.ts',
     module: {
         rules: [
             {
