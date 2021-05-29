@@ -26,7 +26,7 @@ export default () => {
 
     function update(data: Tree) {
         const rootNode: HierarchyNode<Tree> = d3.hierarchy(data);
-        let nodes = d3.tree().size([height, width])(rootNode);
+        const nodes: HierarchyPointNode<Tree> = d3.tree<Tree>().size([height, width])(rootNode);
 
         pathContainer.selectAll("path")
             .data(nodes.links(), (d: HierarchyPointLink<Tree>) => `${d.target.data.name}`)
