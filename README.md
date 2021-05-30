@@ -21,3 +21,4 @@ https://observablehq.com/tutorials
 
 https://observablehq.com/@d3/radial-tidy-tree?collection=@d3/d3-hierarchy
 https://observablehq.com/@d3/force-directed-tree?collection=@d3/d3-hierarchy
+https://observablehq.com/@d3/modifying-a-force-directed-graph?collection=@d3/d3-force
