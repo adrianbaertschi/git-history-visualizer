@@ -30,6 +30,9 @@ Found solution for update problem
 Trying to parse git logs to see what files have been added/modified/deleted in each commit.
 (Same as `git log --pretty=format:user:%aN%n%ct  --reverse --raw`) using walk api from isomorphic-git
 
+Ported git code to run in the browser. Only tricky part was to find out how to make `Buffer` work. Luckily there is a 
+Webpack 5 plugin (`node-polyfill-webpack-plugin`). 
+
 ### Links
 https://gource.io/
 

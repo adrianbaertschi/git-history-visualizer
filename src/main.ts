@@ -1,5 +1,5 @@
 import forceDirectedGraph from "./d3/force-directed-graph";
-import tidyTree from "./d3/tidy-tree";
+import {getChanges} from "./git/explore-git";
 
-// tidyTree()
 forceDirectedGraph()
+getChanges().then(value => console.log(value))

@@ -1,16 +1,17 @@
-import {WalkerEntry} from "isomorphic-git";
-
-const path = require('path')
+import {ReadCommitResult, WalkerEntry} from "isomorphic-git";
+import * as LightningFS from "@isomorphic-git/lightning-fs";
+import http from "isomorphic-git/http/web";
 const git = require('isomorphic-git')
-const http = require('isomorphic-git/http/node')
-const fs = require('fs')
+const fs = new LightningFS('fs')
 
 export const getChanges = async () => {
-    const dir = path.join(process.cwd(), 'test-clone')
+
+    const dir = '/'
     await git.clone({
-        fs, http, dir, url: 'https://github.com/adrianbaertschi/mars-rover'
+        fs, http, dir, url: 'https://github.com/adrianbaertschi/mars-rover',
+        corsProxy: 'https://cors.isomorphic-git.org',
     })
-    let commits = await git.log({fs, dir});
+    let commits: ReadCommitResult[] = await git.log({fs, dir});
     commits.reverse();
 
     let firstCommit = commits[0];
@@ -32,10 +33,6 @@ export const getChanges = async () => {
         const nextCommit = commits[i + 1];
         const files = await getFileStateChanges(currentCommit.oid, nextCommit.oid, dir);
         result.push({commit: nextCommit.oid, files: files})
-    }
-
-    for (const resultElement of result) {
-        console.log(resultElement)
     }
     return result;
 }
