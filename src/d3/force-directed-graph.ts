@@ -10,7 +10,19 @@ export default () => {
 
     d3.select("body").append("button").text("Add")
         .on("click", () => {
-            dummyData.children.push({name: `${Date.now()}`})
+            const nodeToInsert: HierarchyPointNode<Tree> = Object.assign({}, nodes[1])
+            nodeToInsert.data.name = new Date().getTime().toString()
+            links.push({source: tree, target: nodeToInsert});
+            nodes.push(nodeToInsert)
+
+            update()
+        });
+
+    d3.select("body").append("button").text("Remove")
+        .on("click", () => {
+            nodes.pop();
+            links.pop()
+
             update()
         });
 
@@ -26,20 +38,21 @@ export default () => {
         .attr("stroke", "#000")
         .attr("stroke-width", 1.5)
 
+    const root: HierarchyNode<Tree> = d3.hierarchy(dummyData);
+    const tree: HierarchyPointNode<Tree> = d3.tree<Tree>().size([height, width])(root);
+    const links: HierarchyPointLink<Tree>[] = tree.links();
+    const nodes: HierarchyPointNode<Tree>[] = tree.descendants();
+
+    const simulation = d3.forceSimulation<HierarchyPointNode<Tree>, HierarchyPointLink<Tree>>(nodes)
+        .force("link", d3.forceLink(links).id(d => d.index).distance(0).strength(1))
+        .force("charge", d3.forceManyBody().strength(-50))
+        .force("x", d3.forceX())
+        .force("y", d3.forceY());
 
     update()
 
     function update() {
-        const root: HierarchyNode<Tree> = d3.hierarchy(dummyData);
-        const tree = d3.tree<Tree>().size([height, width])(root);
-        const links: HierarchyPointLink<Tree>[] = tree.links();
-        const nodes: HierarchyPointNode<Tree>[] = tree.descendants();
-
-        const simulation: Simulation<HierarchyPointNode<Tree>, HierarchyPointLink<Tree>> = d3.forceSimulation(nodes)
-            .force("link", d3.forceLink(links).id(d => d.index).distance(0).strength(1))
-            .force("charge", d3.forceManyBody().strength(-50))
-            .force("x", d3.forceX())
-            .force("y", d3.forceY());
+        simulation.nodes(nodes);
 
         const link = linkContainer.selectAll("line")
             .data(links, (d: HierarchyPointLink<Tree>) => `${d.target.data.name}`)
@@ -58,21 +71,25 @@ export default () => {
 
         simulation.on("tick", () => {
             link
-                .attr("x1", (d: any) => d.source.x)
-                .attr("y1", (d: any) => d.source.y)
-                .attr("x2", (d: any) => d.target.x)
-                .attr("y2", (d: any) => d.target.y);
+                .attr("x1", (d: HierarchyPointLink<Tree>) => d.source.x)
+                .attr("y1", (d: HierarchyPointLink<Tree>) => d.source.y)
+                .attr("x2", (d: HierarchyPointLink<Tree>) => d.target.x)
+                .attr("y2", (d: HierarchyPointLink<Tree>) => d.target.y);
 
             node
-                .attr("cx", (d: any) => d.x)
-                .attr("cy", (d: any) => d.y);
+                .attr("cx", (d: HierarchyPointNode<Tree>) => d.x)
+                .attr("cy", (d: HierarchyPointNode<Tree>) => d.y);
         });
+
+        simulation.alphaTarget(0.3).restart();
     }
 }
-const drag = (simulation: Simulation<HierarchyPointNode<Tree>, undefined>): any => {
+const drag = (simulation: Simulation<HierarchyPointNode<Tree>, HierarchyPointLink<Tree>>): any => {
 
     function dragStarted(event: any) {
-        if (!event.active) simulation.alphaTarget(0.3).restart();
+        if (!event.active) {
+            simulation.alphaTarget(0.3).restart();
+        }
         event.subject.fx = event.subject.x;
         event.subject.fy = event.subject.y;
     }
@@ -83,7 +100,9 @@ const drag = (simulation: Simulation<HierarchyPointNode<Tree>, undefined>): any 
     }
 
     function dragEnded(event: any) {
-        if (!event.active) simulation.alphaTarget(0);
+        if (!event.active) {
+            simulation.alphaTarget(0);
+        }
         event.subject.fx = null;
         event.subject.fy = null;
     }
