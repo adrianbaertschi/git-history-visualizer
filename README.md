@@ -1,5 +1,5 @@
 Git
-`node run explore-git.js`
+`node explore-git.js`
 https://isomorphic-git.org/en/
 
 D3.js
@@ -27,6 +27,9 @@ Found solution for update problem
 - Set the nodes of simulation inside `update()`
 - Restart the simulation with some `targetAlpha`
 
+Trying to parse git logs to see what files have been added/modified/deleted in each commit.
+(Same as `git log --pretty=format:user:%aN%n%ct  --reverse --raw`) using walk api from isomorphic-git
+
 ### Links
 https://gource.io/
 
@@ -38,3 +41,5 @@ https://observablehq.com/@d3/radial-tidy-tree?collection=@d3/d3-hierarchy
 https://observablehq.com/@d3/force-directed-tree?collection=@d3/d3-hierarchy
 https://observablehq.com/@d3/modifying-a-force-directed-graph?collection=@d3/d3-force
 https://jsfiddle.net/samollason/8m67uek3/
+
+https://github.com/kpj/GitViz
