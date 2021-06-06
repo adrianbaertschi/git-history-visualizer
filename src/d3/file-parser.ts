@@ -1,3 +1,5 @@
+import {Commit} from "../git/explore-git";
+
 const filePaths = [
     ".gitignore",
     "COPYING",
@@ -98,6 +100,11 @@ export const dummyData: Tree = {
 
 
 export const demoData = () => parseFiles(filePaths)
+
+export const parseCommit = (commit: Commit): Tree => {
+    const paths = commit.files.map(file => file.path);
+    return parseFiles(paths)
+}
 
 export const parseFiles = (paths: string[]): Tree => {
     const root: Tree = {name: "root", children: []};

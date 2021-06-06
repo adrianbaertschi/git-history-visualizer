@@ -1,7 +1,17 @@
 import * as git from "isomorphic-git";
 import {CallbackFsClient, HttpClient, PromiseFsClient, ReadCommitResult, WalkerEntry} from "isomorphic-git";
 
-export const getChanges = async (fs: CallbackFsClient | PromiseFsClient, http: HttpClient, cloneDir?: string) => {
+export interface Commit {
+    commit: string
+    files: FileChange[]
+}
+
+export interface FileChange {
+    path: string
+    type: string
+}
+
+export const getChanges = async (fs: CallbackFsClient | PromiseFsClient, http: HttpClient, cloneDir?: string): Promise<Commit[]> => {
     const dir = cloneDir ? cloneDir : '/'
     await git.clone({
         fs, http, dir, url: 'https://github.com/adrianbaertschi/mars-rover',
@@ -17,7 +27,7 @@ export const getChanges = async (fs: CallbackFsClient | PromiseFsClient, http: H
         type: 'add',
     }));
 
-    const result = [];
+    const result: Commit[] = [];
     result.push({
         commit: firstCommit.oid,
         files: filesOfFirsCommit
@@ -62,7 +72,10 @@ async function getFileStateChanges(commitHash1: string, commitHash2: string, dir
             const Boid = await B.oid()
 
             // determine modification type
-            let type = 'equal'
+            if (Aoid === Boid) {
+                return // No change in file
+            }
+            let type
             if (Aoid !== Boid) {
                 type = 'modify'
             }
@@ -71,10 +84,6 @@ async function getFileStateChanges(commitHash1: string, commitHash2: string, dir
             }
             if (Boid === undefined) {
                 type = 'remove'
-            }
-
-            if (type === 'equal') {
-                return
             }
             if (Aoid === undefined && Boid === undefined) {
                 console.log('Something weird happened:')

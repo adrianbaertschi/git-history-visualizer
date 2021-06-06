@@ -33,6 +33,13 @@ Trying to parse git logs to see what files have been added/modified/deleted in e
 Ported git code to run in the browser. Only tricky part was to find out how to make `Buffer` work. Luckily there is a 
 Webpack 5 plugin (`node-polyfill-webpack-plugin`). 
 
+#### 06.06.2021
+
+Adding high-level tests for git operations. Injecting filesystem, http etc as dependencies and using node versions for
+tests and browser versions for real application.
+
+Use first commit of git log to render the graph.
+
 ### Links
 https://gource.io/
 
