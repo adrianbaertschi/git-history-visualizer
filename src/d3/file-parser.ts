@@ -104,12 +104,12 @@ export const parseFiles = (paths: string[]): Tree => {
 
     root.children = paths.reduce((r: Tree[], path: string) => {
         path.split('/')
-            .reduce((acc: Tree[], currentName) => {
-                let temp = acc.find(t => t.name === currentName);
+            .reduce((acc: Tree[] | undefined, currentName) => {
+                let temp = acc?.find(t => t.name === currentName);
                 if (!temp) {
-                    acc.push(temp = {name: currentName, children: []});
+                    acc?.push(temp = {name: currentName, children: []});
                 }
-                return temp.children;
+                return temp?.children;
             }, r);
         return r;
     }, [])

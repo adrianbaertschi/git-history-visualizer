@@ -11,8 +11,7 @@ export const getChanges = async (fs: CallbackFsClient | PromiseFsClient, http: H
     commits.reverse();
 
     let firstCommit = commits[0];
-    const filesOfFirsCommit = (await git.listFiles(
-        {fs, dir: dir, ref: firstCommit.oid}
+    const filesOfFirsCommit = (await git.listFiles({fs, dir: dir, ref: firstCommit.oid}
     )).map((filepath: string) => ({
         path: filepath,
         type: 'add',
@@ -39,7 +38,7 @@ async function getFileStateChanges(commitHash1: string, commitHash2: string, dir
         fs,
         dir,
         trees: [git.TREE({ref: commitHash1}), git.TREE({ref: commitHash2})],
-        map: async function (filepath: string, [A, B]: WalkerEntry[]) {
+        map: async function (filepath: string, [A, B]: WalkerEntry[] | any) {
             // ignore directories
             if (filepath === '.') {
                 return

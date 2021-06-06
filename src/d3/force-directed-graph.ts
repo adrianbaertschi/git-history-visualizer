@@ -44,7 +44,7 @@ export default (data: Tree) => {
     const nodes: HierarchyPointNode<Tree>[] = tree.descendants();
 
     const simulation = d3.forceSimulation<HierarchyPointNode<Tree>, HierarchyPointLink<Tree>>(nodes)
-        .force("link", d3.forceLink(links).id(d => d.index).distance(0).strength(1))
+        .force("link", d3.forceLink<HierarchyPointNode<Tree>, HierarchyPointLink<Tree>>(links).id(d => d.id ?? 'missing-id').distance(0).strength(1))
         .force("charge", d3.forceManyBody().strength(-50))
         .force("x", d3.forceX())
         .force("y", d3.forceY());
@@ -55,11 +55,11 @@ export default (data: Tree) => {
         simulation.nodes(nodes);
 
         const link = linkContainer.selectAll("line")
-            .data(links, (d: HierarchyPointLink<Tree>) => `${d.target.data.name}`)
+            .data(links, (d: any) => `${d.target.data.name}`)
             .join("line");
 
         const node = nodeContainer.selectAll("circle")
-            .data(nodes, (d: HierarchyPointNode<Tree>) => d.data.name)
+            .data<HierarchyPointNode<Tree>>(nodes, (d: any) => d.data.name)
             .join("circle")
             .attr("fill", d => d.children ? null : "#000")
             .attr("stroke", d => d.children ? null : "#000")
