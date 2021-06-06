@@ -1,4 +1,4 @@
-import {getChanges} from "./explore-git";
+import {getChanges} from "./git-client";
 import * as fs from "fs";
 import * as http from 'isomorphic-git/http/node'
 import * as path from 'path'

@@ -1,4 +1,4 @@
-import {parseFiles, Tree} from "./file-parser";
+import {parseFiles, Tree} from "./tree-builder";
 
 test('empty list', () => {
     let s = parseFiles([]);

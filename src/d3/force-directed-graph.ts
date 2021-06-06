@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import {HierarchyNode, HierarchyPointLink, HierarchyPointNode, Simulation} from "d3";
-import {Tree} from "./file-parser";
+import {Tree} from "./tree-builder";
 
 
 export default (data: Tree) => {

@@ -1,4 +1,4 @@
-import {Commit} from "../git/explore-git";
+import {Commit} from "../git/git-client";
 
 const filePaths = [
     ".gitignore",
