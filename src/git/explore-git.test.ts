@@ -1,8 +1,8 @@
 import {getChanges} from "./explore-git";
+import * as fs from "fs";
+import * as http from 'isomorphic-git/http/node'
+import * as path from 'path'
 
-const fs = require('fs')
-const http = require('isomorphic-git/http/node')
-const path = require('path')
 const dir = path.join(process.cwd(), 'test-clone')
 
 test('mars-rover repo has 5 commits', async () => {

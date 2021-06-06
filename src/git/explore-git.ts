@@ -1,10 +1,7 @@
+import * as git from "isomorphic-git";
 import {CallbackFsClient, HttpClient, PromiseFsClient, ReadCommitResult, WalkerEntry} from "isomorphic-git";
-import * as LightningFS from "@isomorphic-git/lightning-fs";
 
-
-const git = require('isomorphic-git')
-
-export const getChanges = async (fs: LightningFS, http: HttpClient, cloneDir?: string) => {
+export const getChanges = async (fs: CallbackFsClient | PromiseFsClient, http: HttpClient, cloneDir?: string) => {
     const dir = cloneDir ? cloneDir : '/'
     await git.clone({
         fs, http, dir, url: 'https://github.com/adrianbaertschi/mars-rover',
