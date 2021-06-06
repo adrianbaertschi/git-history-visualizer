@@ -1,12 +1,11 @@
-import {ReadCommitResult, WalkerEntry} from "isomorphic-git";
+import {CallbackFsClient, HttpClient, PromiseFsClient, ReadCommitResult, WalkerEntry} from "isomorphic-git";
 import * as LightningFS from "@isomorphic-git/lightning-fs";
-import http from "isomorphic-git/http/web";
+
+
 const git = require('isomorphic-git')
-const fs = new LightningFS('fs')
 
-export const getChanges = async () => {
-
-    const dir = '/'
+export const getChanges = async (fs: LightningFS, http: HttpClient, cloneDir?: string) => {
+    const dir = cloneDir ? cloneDir : '/'
     await git.clone({
         fs, http, dir, url: 'https://github.com/adrianbaertschi/mars-rover',
         corsProxy: 'https://cors.isomorphic-git.org',
@@ -31,14 +30,14 @@ export const getChanges = async () => {
     for (let i = 0; i < commits.length - 1; i++) {
         const currentCommit = commits[i];
         const nextCommit = commits[i + 1];
-        const files = await getFileStateChanges(currentCommit.oid, nextCommit.oid, dir);
+        const files = await getFileStateChanges(currentCommit.oid, nextCommit.oid, dir, fs);
         result.push({commit: nextCommit.oid, files: files})
     }
     return result;
 }
 
 // https://isomorphic-git.org/docs/en/snippets
-async function getFileStateChanges(commitHash1: string, commitHash2: string, dir: any) {
+async function getFileStateChanges(commitHash1: string, commitHash2: string, dir: any, fs: CallbackFsClient | PromiseFsClient) {
     return git.walk({
         fs,
         dir,
@@ -94,6 +93,3 @@ async function getFileStateChanges(commitHash1: string, commitHash2: string, dir
         },
     })
 }
-
-
-getChanges().then(() => console.log('Done'))
