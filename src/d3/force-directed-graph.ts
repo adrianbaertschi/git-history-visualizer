@@ -1,9 +1,9 @@
 import * as d3 from "d3";
 import {HierarchyNode, HierarchyPointLink, HierarchyPointNode, Simulation} from "d3";
-import {dummyData, Tree} from "./file-parser";
+import {Tree} from "./file-parser";
 
 
-export default () => {
+export default (data: Tree) => {
     const margin = {top: 20, right: 120, bottom: 30, left: 90};
     const width = 660 - margin.left - margin.right;
     const height = 500 - margin.top - margin.bottom;
@@ -38,7 +38,7 @@ export default () => {
         .attr("stroke", "#000")
         .attr("stroke-width", 1.5)
 
-    const root: HierarchyNode<Tree> = d3.hierarchy(dummyData);
+    const root: HierarchyNode<Tree> = d3.hierarchy(data);
     const tree: HierarchyPointNode<Tree> = d3.tree<Tree>().size([height, width])(root);
     const links: HierarchyPointLink<Tree>[] = tree.links();
     const nodes: HierarchyPointNode<Tree>[] = tree.descendants();
