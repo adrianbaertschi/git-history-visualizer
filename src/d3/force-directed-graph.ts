@@ -3,10 +3,47 @@ import {HierarchyNode, HierarchyPointLink, HierarchyPointNode, Simulation} from 
 import {Tree} from "./tree-builder";
 
 
-export default (data: Tree) => {
+export const ForceDirectedGraph = (data: Tree) => {
     const margin = {top: 20, right: 120, bottom: 30, left: 90};
     const width = 660 - margin.left - margin.right;
     const height = 500 - margin.top - margin.bottom;
+
+    // @ts-ignore
+    this.addNode = (filepath: string) => {
+
+        // add  src/main/java/marsrover
+        // create new node marsrover
+        // find src/main/java (from)
+        console.log("Adding ", filepath)
+
+        const fileName = filepath.split('/').pop() ?? 'not found';
+
+        console.log(nodes)
+
+        let parent = nodes.filter(n => n.data.name === fileName)[0];
+        console.log(parent)
+
+        const nodeToInsert: HierarchyPointNode<Tree> = Object.assign({}, nodes[1])
+        nodeToInsert.data.name = fileName
+
+        links.push({source: parent, target: nodeToInsert});
+        nodes.push(nodeToInsert)
+
+        update()
+    };
+
+    // @ts-ignore
+    this.remove = (filepath: string) => {
+        const fileName = filepath.split('/').pop()
+
+        let nodeIndex = nodes.findIndex(n => n.data.name === fileName);
+        nodes.splice(nodeIndex, 1);
+
+        let linkIndex = links.findIndex(l => l.target.data.name === fileName);
+        links.splice(linkIndex, 1);
+
+        update()
+    }
 
     d3.select("body").append("button").text("Add")
         .on("click", () => {
@@ -55,7 +92,7 @@ export default (data: Tree) => {
         simulation.nodes(nodes);
 
         const link = linkContainer.selectAll("line")
-            .data(links, (d: any) => `${d.target.data.name}`)
+            .data(links, (d: any) => d.target.data.name)
             .join("line");
 
         const node = nodeContainer.selectAll("circle")
@@ -83,6 +120,8 @@ export default (data: Tree) => {
 
         simulation.alphaTarget(0.3).restart();
     }
+
+    return this;
 }
 const drag = (simulation: Simulation<HierarchyPointNode<Tree>, HierarchyPointLink<Tree>>): any => {
 

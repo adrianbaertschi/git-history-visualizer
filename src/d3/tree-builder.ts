@@ -82,23 +82,6 @@ const filePaths = [
     "src/zoomcamera.cpp",
     "src/zoomcamera.h"
 ];
-
-export const dummyData: Tree = {
-    name: "root",
-    children: [
-        {name: "child #1"},
-        {
-            name: "child #2",
-            children: [
-                {name: "grandchild #1"},
-                {name: "grandchild #2"},
-                {name: "grandchild #3"}
-            ]
-        }
-    ]
-};
-
-
 export const demoData = () => parseFiles(filePaths)
 
 export const parseCommit = (commit: Commit): Tree => {
@@ -109,6 +92,7 @@ export const parseCommit = (commit: Commit): Tree => {
 export const parseFiles = (paths: string[]): Tree => {
     const root: Tree = {name: "root", children: []};
 
+    // Life-mission: try to understand this
     root.children = paths.reduce((r: Tree[], path: string) => {
         path.split('/')
             .reduce((acc: Tree[] | undefined, currentName) => {

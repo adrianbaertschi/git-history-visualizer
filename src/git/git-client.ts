@@ -21,11 +21,11 @@ export const getChanges = async (fs: CallbackFsClient | PromiseFsClient, http: H
     commits.reverse();
 
     let firstCommit = commits[0];
-    const filesOfFirsCommit = (await git.listFiles({fs, dir: dir, ref: firstCommit.oid}
-    )).map((filepath: string) => ({
-        path: filepath,
-        type: 'add',
-    }));
+    const filesOfFirsCommit = (await git.listFiles({fs, dir: dir, ref: firstCommit.oid}))
+        .map((filepath: string) => ({
+            path: filepath,
+            type: 'add',
+        }));
 
     const result: Commit[] = [];
     result.push({
@@ -54,13 +54,20 @@ async function getFileStateChanges(commitHash1: string, commitHash2: string, dir
                 return
             }
             if (A == null) {
-                // console.log('A is null')
+                if (await B.type() === 'blob') {
+                    return {
+                        path: filepath,
+                        type: 'add',
+                    }
+                }
                 return
             }
 
             if (B == null) {
-                // console.log('A is null')
-                return
+                return {
+                    path: filepath,
+                    type: 'delete'
+                }
             }
 
             if ((await A.type()) === 'tree' || (await B.type()) === 'tree') {
@@ -68,24 +75,24 @@ async function getFileStateChanges(commitHash1: string, commitHash2: string, dir
             }
 
             // generate ids
-            const Aoid = await A.oid()
-            const Boid = await B.oid()
+            const oidA = await A.oid()
+            const oidB = await B.oid()
 
             // determine modification type
-            if (Aoid === Boid) {
+            if (oidA === oidB) {
                 return // No change in file
             }
             let type
-            if (Aoid !== Boid) {
+            if (oidA !== oidB) {
                 type = 'modify'
             }
-            if (Aoid === undefined) {
+            if (oidA === undefined) {
                 type = 'add'
             }
-            if (Boid === undefined) {
+            if (oidB === undefined) {
                 type = 'remove'
             }
-            if (Aoid === undefined && Boid === undefined) {
+            if (oidA === undefined && oidB === undefined) {
                 console.log('Something weird happened:')
                 console.log(A)
                 console.log(B)
