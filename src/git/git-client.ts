@@ -54,13 +54,10 @@ async function getFileStateChanges(commitHash1: string, commitHash2: string, dir
                 return
             }
             if (A == null) {
-                if (await B.type() === 'blob') {
-                    return {
-                        path: filepath,
-                        type: 'add',
-                    }
+                return {
+                    path: filepath,
+                    type: 'add',
                 }
-                return
             }
 
             if (B == null) {

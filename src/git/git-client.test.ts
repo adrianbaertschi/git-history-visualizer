@@ -55,9 +55,11 @@ test('mars-rover repo list file and folder renaming', async () => {
         {path: 'src/main/java/Direction.java', type: 'delete'},
         {path: 'src/main/java/Plateau.java', type: 'delete'},
         {path: 'src/main/java/Rover.java', type: 'delete'},
+        {path: 'src/main/java/marsrover', type: 'add'},
         {path: 'src/main/java/marsrover/Direction.java', type: 'add'},
         {path: 'src/main/java/marsrover/Plateau.java', type: 'add'},
         {path: 'src/main/java/marsrover/Rover.java', type: 'add'},
+        {path: 'src/main/java/marsrover/instruction', type: 'add'},
         {path: 'src/main/java/marsrover/instruction/Instruction.java', type: 'add'},
         {path: 'src/main/java/marsrover/instruction/InstructionParser.java', type: 'add'},
         {path: 'src/main/java/marsrover/instruction/LeftInstruction.java', type: 'add'},
@@ -65,8 +67,10 @@ test('mars-rover repo list file and folder renaming', async () => {
         {path: 'src/main/java/marsrover/instruction/RightInstruction.java', type: 'add'},
         {path: 'src/test/java/PlateauTest.java', type: 'delete'},
         {path: 'src/test/java/RoverTest.java', type: 'delete'},
+        {path: 'src/test/java/marsrover', type: 'add'},
         {path: 'src/test/java/marsrover/PlateauTest.java', type: 'add'},
         {path: 'src/test/java/marsrover/RoverTest.java', type: 'add'},
+        {path: 'src/test/java/marsrover/instruction', type: 'add'},
         {path: 'src/test/java/marsrover/instruction/InstructionParserTest.java', type: 'add'}
     ]
     expect(commit.files).toStrictEqual(expectedFiles);
