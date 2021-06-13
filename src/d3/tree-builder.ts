@@ -90,25 +90,24 @@ export const parseCommit = (commit: Commit): Tree => {
 }
 
 export const parseFiles = (paths: string[]): Tree => {
-    const root: Tree = {name: "root", children: []};
-
     // Life-mission: try to understand this
-    root.children = paths.reduce((r: Tree[], path: string) => {
-        path.split('/')
-            .reduce((acc: Tree[] | undefined, currentName) => {
+    const children = paths.reduce((r: Tree[], path: string) => {
+        path.split("/")
+            .reduce((acc: Tree[] | undefined, currentName, i, pathSegments) => {
                 let temp = acc?.find(t => t.name === currentName);
                 if (!temp) {
-                    acc?.push(temp = {name: currentName, children: []});
+                    const fullPath = pathSegments.slice(0, i + 1).join("/")
+                    acc?.push(temp = {name: currentName, path: `root/${fullPath}`, children: []});
                 }
                 return temp?.children;
             }, r);
         return r;
     }, [])
-
-    return root
+    return {name: "root", path: "root", children}
 }
 
 export interface Tree {
-    name: string
+    name: string,
+    path: string,
     children?: Tree[]
 }
