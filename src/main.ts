@@ -9,7 +9,7 @@ import {parseCommit} from "./d3/tree-builder";
     const commits = await getChanges(fs, http);
 
     const initialTree = parseCommit(commits[0]);
-    // @ts-ignore
+
     const graph = new ForceDirectedGraph(initialTree)
     for (let i = 1; i < commits.length; i++) {
 
