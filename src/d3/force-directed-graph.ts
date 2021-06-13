@@ -8,8 +8,8 @@ export class ForceDirectedGraph {
     simulation: d3.Simulation<d3.HierarchyPointNode<Tree>, d3.HierarchyPointLink<Tree>>;
     linkContainer: Selection<SVGGElement, unknown, HTMLElement, any>;
     nodeContainer: Selection<SVGGElement, unknown, HTMLElement, any>;
-    nodes: HierarchyPointNode<Tree>[] = [];
-    links: HierarchyPointLink<Tree>[] = [];
+    nodes: HierarchyPointNode<Tree>[];
+    links: HierarchyPointLink<Tree>[];
 
     constructor(data: Tree) {
         const margin = {top: 20, right: 120, bottom: 30, left: 90};
@@ -61,24 +61,21 @@ export class ForceDirectedGraph {
     }
 
     addNode(filepath: string) {
-
-        // add  src/main/java/marsrover
-        // create new node marsrover
-        // find src/main/java (from)
-        console.log("Adding ", filepath)
-
+        const parentPath = filepath.substr(0, filepath.lastIndexOf("/"));
+        const parent = this.nodes.filter(n => n.data.path === parentPath)[0]
+        if (!parent) {
+            throw `Parent not found for ${filepath}: ${parentPath}`
+        }
         const fileName = filepath.split('/').pop() ?? 'not found';
-
-        console.log(this.nodes)
-
-        let parent = this.nodes.filter(n => n.data.name === fileName)[0];
-        console.log(parent)
-
+        const data: Tree = {
+            name: fileName,
+            path: filepath
+        }
         const nodeToInsert: HierarchyPointNode<Tree> = Object.assign({}, this.nodes[1])
-        nodeToInsert.data.name = fileName
+        nodeToInsert.data = data
 
-        this.links.push({source: parent, target: nodeToInsert});
         this.nodes.push(nodeToInsert)
+        this.links.push({source: parent, target: nodeToInsert});
 
         this.update()
     };
@@ -99,11 +96,11 @@ export class ForceDirectedGraph {
         this.simulation.nodes(this.nodes);
 
         const link = this.linkContainer.selectAll("line")
-            .data(this.links, (d: any) => d.target.data.name)
+            .data(this.links, (d: any) => d.target.data.path)
             .join("line");
 
         const node = this.nodeContainer.selectAll("circle")
-            .data<HierarchyPointNode<Tree>>(this.nodes, (d: any) => d.data.name)
+            .data<HierarchyPointNode<Tree>>(this.nodes, (d: any) => d.data.path)
             .join("circle")
             .attr("fill", d => d.children ? null : "#000")
             .attr("stroke", d => d.children ? null : "#000")
@@ -111,7 +108,7 @@ export class ForceDirectedGraph {
             .call(drag(this.simulation));
 
         node.append("title")
-            .text(d => d.data.name);
+            .text(d => d.data.path);
 
         this.simulation.on("tick", () => {
             link

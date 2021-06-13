@@ -21,7 +21,7 @@ import {parseCommit} from "./d3/tree-builder";
             await new Promise(r => setTimeout(r, 500));
 
             if (file.type === 'add') {
-                // graph.addNode(file.path);
+                graph.addNode(`root/${file.path}`);
             } else if (file.type === 'delete') {
                 graph.remove(file.path)
             }
