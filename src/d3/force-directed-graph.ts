@@ -71,7 +71,7 @@ export class ForceDirectedGraph {
             name: fileName,
             path: filepath
         }
-        const nodeToInsert: HierarchyPointNode<Tree> = Object.assign({}, this.nodes[1])
+        const nodeToInsert: HierarchyPointNode<Tree> = Object.assign({}, parent)
         nodeToInsert.data = data
 
         this.nodes.push(nodeToInsert)
@@ -102,8 +102,8 @@ export class ForceDirectedGraph {
         const node = this.nodeContainer.selectAll("circle")
             .data<HierarchyPointNode<Tree>>(this.nodes, (d: any) => d.data.path)
             .join("circle")
-            .attr("fill", d => d.children ? null : "#000")
-            .attr("stroke", d => d.children ? null : "#000")
+            .attr("fill", d => d.data.name.includes('.') ? "#0099ff" : "#000") // TODO this condition is not 100% correct
+            .attr("stroke", d => d.data.name.includes('.') ? "#0099ff" : "#000")
             .attr("r", 3.5)
             .call(drag(this.simulation));
 
