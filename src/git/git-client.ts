@@ -8,7 +8,13 @@ export interface Commit {
 
 export interface FileChange {
     path: string
-    type: string
+    operation: FileOperation
+}
+
+export enum FileOperation {
+    ADD = "ADD",
+    REMOVE = "REMOVE",
+    MODIFY = "MODIFY"
 }
 
 export const getChanges = async (fs: CallbackFsClient | PromiseFsClient, http: HttpClient, cloneDir?: string): Promise<Commit[]> => {
@@ -24,7 +30,7 @@ export const getChanges = async (fs: CallbackFsClient | PromiseFsClient, http: H
     const filesOfFirsCommit = (await git.listFiles({fs, dir: dir, ref: firstCommit.oid}))
         .map((filepath: string) => ({
             path: filepath,
-            type: 'add',
+            operation: FileOperation.ADD,
         }));
 
     const result: Commit[] = [];
@@ -48,7 +54,7 @@ async function getFileStateChanges(commitHash1: string, commitHash2: string, dir
         fs,
         dir,
         trees: [git.TREE({ref: commitHash1}), git.TREE({ref: commitHash2})],
-        map: async function (filepath: string, [A, B]: WalkerEntry[] | any) {
+        map: async (filepath: string, [A, B]: WalkerEntry[] | any): Promise<FileChange | undefined> => {
             // ignore directories
             if (filepath === '.') {
                 return
@@ -56,14 +62,14 @@ async function getFileStateChanges(commitHash1: string, commitHash2: string, dir
             if (A == null) {
                 return {
                     path: filepath,
-                    type: 'add',
+                    operation: FileOperation.ADD
                 }
             }
 
             if (B == null) {
                 return {
                     path: filepath,
-                    type: 'delete'
+                    operation: FileOperation.REMOVE
                 }
             }
 
@@ -79,25 +85,23 @@ async function getFileStateChanges(commitHash1: string, commitHash2: string, dir
             if (oidA === oidB) {
                 return // No change in file
             }
-            let type
             if (oidA !== oidB) {
-                type = 'modify'
+                return {
+                    path: filepath,
+                    operation: FileOperation.MODIFY
+                }
             }
             if (oidA === undefined) {
-                type = 'add'
+                return {
+                    path: filepath,
+                    operation: FileOperation.ADD
+                }
             }
             if (oidB === undefined) {
-                type = 'remove'
-            }
-            if (oidA === undefined && oidB === undefined) {
-                console.log('Something weird happened:')
-                console.log(A)
-                console.log(B)
-            }
-
-            return {
-                path: filepath,
-                type: type,
+                return {
+                    path: filepath,
+                    operation: FileOperation.REMOVE
+                }
             }
         },
     })

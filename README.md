@@ -13,9 +13,17 @@ Run it:
 - [x] Create tree from directory struct
 - [x] Create a visual graph from tree
 - [x] Parse git commit to tree
-- [ ] Generate series of trees from git log
+- [x] Generate series of trees from git log
 - [ ] Create animation from tree changes
+  - [x] Removal
+  - [ ] Add
+  - [ ] Modify
+- [ ] UI
+  - [ ] Input for repo url
+  - [ ] Timeline/log?
 
+https://isomorphic-git.org/docs/en/onProgress
+    
 ### Journal
 
 #### 30.05.2021
