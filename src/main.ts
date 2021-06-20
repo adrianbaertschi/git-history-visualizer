@@ -25,10 +25,10 @@ import {parseCommit} from "./d3/tree-builder";
                     graph.addNode(`root/${file.path}`);
                     break;
                 case FileOperation.REMOVE:
-                    graph.remove(file.path)
+                    graph.remove(`root/${file.path}`)
                     break;
                 case FileOperation.MODIFY:
-                    graph.modify(file.path)
+                    graph.modify(`root/${file.path}`)
                     break;
             }
         }

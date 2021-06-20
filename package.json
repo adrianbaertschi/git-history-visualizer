@@ -11,17 +11,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@isomorphic-git/lightning-fs": "^4.4.1",
+    "css.escape": "^1.5.1",
     "d3": "^6.7.0",
-    "isomorphic-git": "^1.8.2",
-    "@isomorphic-git/lightning-fs": "^4.4.1"
+    "isomorphic-git": "^1.8.2"
   },
   "devDependencies": {
     "@types/d3": "^6.7.0",
     "@types/isomorphic-git__lightning-fs": "^4.4.1",
     "@types/jest": "^26.0.23",
     "html-webpack-plugin": "^5.3.1",
-    "node-polyfill-webpack-plugin": "^1.1.2",
     "jest": "^27.0.1",
+    "node-polyfill-webpack-plugin": "^1.1.2",
     "ts-jest": "^27.0.1",
     "ts-loader": "^9.2.2",
     "typescript": "^4.3.2",

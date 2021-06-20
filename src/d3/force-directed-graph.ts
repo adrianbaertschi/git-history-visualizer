@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import {HierarchyNode, HierarchyPointLink, HierarchyPointNode, Simulation} from "d3";
 import {Selection} from "d3-selection"
 import {Tree} from "./tree-builder";
-
+import "css.escape";
 
 export class ForceDirectedGraph {
     simulation: d3.Simulation<d3.HierarchyPointNode<Tree>, d3.HierarchyPointLink<Tree>>;
@@ -81,20 +81,29 @@ export class ForceDirectedGraph {
     };
 
     remove(filepath: string) {
-        const fileName = filepath.split('/').pop()
-
-        let nodeIndex = this.nodes.findIndex(n => n.data.name === fileName);
+        let nodeIndex = this.nodes.findIndex(n => n.data.path === filepath);
+        if (nodeIndex == -1) {
+            throw `Path ${filepath} not found in nodes`
+        }
         this.nodes.splice(nodeIndex, 1);
 
-        let linkIndex = this.links.findIndex(l => l.target.data.name === fileName);
+        let linkIndex = this.links.findIndex(l => l.target.data.path === filepath);
+        if (linkIndex == -1) {
+            throw `Path ${filepath} not found in links`
+        }
         this.links.splice(linkIndex, 1);
 
         this.update()
     }
 
     modify(path: string) {
-        const cssId = CSS.escape(`root/${path}`);
-        this.nodeContainer.select(`#${cssId}`)
+        const cssId = CSS.escape(path);
+        const selection = this.nodeContainer.select(`#${cssId}`);
+
+        if (selection.empty()) {
+            throw `Node ${path} not found`
+        }
+        selection
             .transition()
             .duration(1000)
             .attr("fill", "red")
