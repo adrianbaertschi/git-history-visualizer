@@ -92,6 +92,20 @@ export class ForceDirectedGraph {
         this.update()
     }
 
+    modify(path: string) {
+        const cssId = CSS.escape(`root/${path}`);
+        this.nodeContainer.select(`#${cssId}`)
+            .transition()
+            .duration(1000)
+            .attr("fill", "red")
+            .attr("stroke", "red")
+            .transition() // transition back to normal
+            .delay(1000)
+            .duration(1000)
+            .attr("fill", (d: any) => d.data.name.includes('.') ? "#0099ff" : "#000")
+            .attr("stroke", (d: any) => d.data.name.includes('.') ? "#0099ff" : "#000");
+    }
+
     update() {
         this.simulation.nodes(this.nodes);
 
@@ -105,6 +119,7 @@ export class ForceDirectedGraph {
             .attr("fill", d => d.data.name.includes('.') ? "#0099ff" : "#000") // TODO this condition is not 100% correct
             .attr("stroke", d => d.data.name.includes('.') ? "#0099ff" : "#000")
             .attr("r", 3.5)
+            .attr("id", d => d.data.path)
             .call(drag(this.simulation));
 
         node.append("title")

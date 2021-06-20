@@ -15,15 +15,15 @@ Run it:
 - [x] Parse git commit to tree
 - [x] Generate series of trees from git log
 - [ ] Create animation from tree changes
-  - [x] Removal
-  - [ ] Add
-  - [ ] Modify
+    - [x] Removal
+    - [ ] Add
+    - [ ] Modify
 - [ ] UI
-  - [ ] Input for repo url
-  - [ ] Timeline/log?
+    - [ ] Input for repo url
+    - [ ] Timeline/log?
 
 https://isomorphic-git.org/docs/en/onProgress
-    
+
 ### Journal
 
 #### 30.05.2021
@@ -73,6 +73,11 @@ Implemented the add feature. Commits which add files should now reflect on the g
 is update correctly in call cases.
 
 Added the full path to every `Tree` object to have a unique id.
+
+##### 16.06.2021
+
+Introduced enum to model file change operations (ADD, REMOVE, MODIFY). Played around with the modify events, idea is
+to "flash" the nodes quickly. Learned about special characters in CSS selectors and `CSS.escape()`.
 
 ### Links
 

@@ -28,6 +28,7 @@ import {parseCommit} from "./d3/tree-builder";
                     graph.remove(file.path)
                     break;
                 case FileOperation.MODIFY:
+                    graph.modify(file.path)
                     break;
             }
         }
