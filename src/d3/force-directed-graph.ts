@@ -3,6 +3,8 @@ import { HierarchyNode, HierarchyPointLink, HierarchyPointNode, Simulation } fro
 import { Selection } from 'd3-selection'
 import { Tree } from './tree-builder'
 import 'css.escape'
+import { D3DragEvent } from 'd3-drag'
+import { SimulationNodeDatum } from 'd3-force'
 
 export class ForceDirectedGraph {
   simulation: d3.Simulation<d3.HierarchyPointNode<Tree>, d3.HierarchyPointLink<Tree>>
@@ -162,21 +164,22 @@ export class ForceDirectedGraph {
 }
 
 const drag = (simulation: Simulation<HierarchyPointNode<Tree>, HierarchyPointLink<Tree>>): any => {
-  const dragStarted = (event: any): void => {
-    if (!event.active) {
+  type D3GraphDragEvent = D3DragEvent<SVGCircleElement, Tree, SimulationNodeDatum>
+  const dragStarted = (event: D3GraphDragEvent): void => {
+    if (event.active > 0) {
       simulation.alphaTarget(0.3).restart()
     }
     event.subject.fx = event.subject.x
     event.subject.fy = event.subject.y
   }
 
-  const dragged = (event: any): void => {
+  const dragged = (event: D3GraphDragEvent): void => {
     event.subject.fx = event.x
     event.subject.fy = event.y
   }
 
-  const dragEnded = (event: any): void => {
-    if (!event.active) {
+  const dragEnded = (event: D3GraphDragEvent): void => {
+    if (event.active > 0) {
       simulation.alphaTarget(0)
     }
     event.subject.fx = null
