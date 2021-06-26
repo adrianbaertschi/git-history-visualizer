@@ -9,7 +9,11 @@ test('render root with one child', () => {
   const tree: Tree = {
     name: 'root',
     path: 'root',
-    children: [{ name: 'a', path: 'root/a', children: [] }]
+    children: [{
+      name: 'a',
+      path: 'root/a',
+      children: []
+    }]
   }
   const graph = new ForceDirectedGraph(tree)
 
@@ -31,8 +35,16 @@ test('remove a leaf node', () => {
         name: 'a',
         path: 'root/a',
         children: [
-          { name: 'b', path: 'root/a/b', children: [] },
-          { name: 'c', path: 'root/a/c', children: [] }
+          {
+            name: 'b',
+            path: 'root/a/b',
+            children: []
+          },
+          {
+            name: 'c',
+            path: 'root/a/c',
+            children: []
+          }
         ]
       }
     ]
@@ -56,7 +68,10 @@ test('remove non-existing leaf throws error', () => {
   const tree: Tree = {
     name: 'root',
     path: 'root',
-    children: [{ name: 'a', path: 'root/a' }]
+    children: [{
+      name: 'a',
+      path: 'root/a'
+    }]
   }
 
   const graph = new ForceDirectedGraph(tree)
@@ -70,7 +85,11 @@ test('add node to root', () => {
   const tree: Tree = {
     name: 'root',
     path: 'root',
-    children: [{ name: 'a', path: 'root/a', children: [] }]
+    children: [{
+      name: 'a',
+      path: 'root/a',
+      children: []
+    }]
   }
   const graph = new ForceDirectedGraph(tree)
   graph.addNode('root/a/b')
@@ -85,11 +104,27 @@ test('add node to root', () => {
   expect(graph.links[0].target.data.name).toBe('a')
 })
 
+test('add node to non-existing parent throws error', () => {
+  const tree: Tree = {
+    name: 'root',
+    path: 'root'
+  }
+  const graph = new ForceDirectedGraph(tree)
+
+  expect(() => {
+    graph.addNode('bla/a')
+  }).toThrow('Parent not found for bla/a: bla')
+})
+
 test('commit to existing file updates color', async () => {
   const tree: Tree = {
     name: 'root',
     path: 'root',
-    children: [{ name: 'a', path: 'root/a', children: [] }]
+    children: [{
+      name: 'a',
+      path: 'root/a',
+      children: []
+    }]
   }
   const graph = new ForceDirectedGraph(tree)
   graph.modify('root/a')
@@ -108,7 +143,11 @@ test('modify non-existing file throws error', async () => {
   const tree: Tree = {
     name: 'root',
     path: 'root',
-    children: [{ name: 'a', path: 'root/a', children: [] }]
+    children: [{
+      name: 'a',
+      path: 'root/a',
+      children: []
+    }]
   }
 
   const graph = new ForceDirectedGraph(tree)

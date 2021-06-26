@@ -12,7 +12,12 @@ export class ForceDirectedGraph {
   links: Array<HierarchyPointLink<Tree>>
 
   constructor (data: Tree) {
-    const margin = { top: 20, right: 120, bottom: 30, left: 90 }
+    const margin = {
+      top: 20,
+      right: 120,
+      bottom: 30,
+      left: 90
+    }
     const width = 660 - margin.left - margin.right
     const height = 500 - margin.top - margin.bottom
 
@@ -20,7 +25,10 @@ export class ForceDirectedGraph {
       .on('click', () => {
         const nodeToInsert: HierarchyPointNode<Tree> = Object.assign({}, this.nodes[1])
         nodeToInsert.data.name = new Date().getTime().toString()
-        this.links.push({ source: tree, target: nodeToInsert })
+        this.links.push({
+          source: tree,
+          target: nodeToInsert
+        })
         this.nodes.push(nodeToInsert)
 
         this.update()
@@ -60,11 +68,11 @@ export class ForceDirectedGraph {
     this.update()
   }
 
-  addNode (filepath: string) {
+  addNode (filepath: string): void {
     const parentPath = filepath.substr(0, filepath.lastIndexOf('/'))
     const parent = this.nodes.filter(n => n.data.path === parentPath)[0]
-    if (!parent) {
-      throw `Parent not found for ${filepath}: ${parentPath}`
+    if (parent == null) {
+      throw new Error(`Parent not found for ${filepath}: ${parentPath}`)
     }
     const fileName = filepath.split('/').pop() ?? 'not found'
     const data: Tree = {
@@ -75,33 +83,36 @@ export class ForceDirectedGraph {
     nodeToInsert.data = data
 
     this.nodes.push(nodeToInsert)
-    this.links.push({ source: parent, target: nodeToInsert })
+    this.links.push({
+      source: parent,
+      target: nodeToInsert
+    })
 
     this.update()
   };
 
-  remove (filepath: string) {
+  remove (filepath: string): void {
     const nodeIndex = this.nodes.findIndex(n => n.data.path === filepath)
-    if (nodeIndex == -1) {
-      throw `Path ${filepath} not found in nodes`
+    if (nodeIndex === -1) {
+      throw new Error(`Path ${filepath} not found in nodes`)
     }
     this.nodes.splice(nodeIndex, 1)
 
     const linkIndex = this.links.findIndex(l => l.target.data.path === filepath)
-    if (linkIndex == -1) {
-      throw `Path ${filepath} not found in links`
+    if (linkIndex === -1) {
+      throw new Error(`Path ${filepath} not found in links`)
     }
     this.links.splice(linkIndex, 1)
 
     this.update()
   }
 
-  modify (path: string) {
+  modify (path: string): void {
     const cssId = CSS.escape(path)
     const selection = this.nodeContainer.select(`#${cssId}`)
 
     if (selection.empty()) {
-      throw `Node ${path} not found`
+      throw new Error(`Node ${path} not found`)
     }
     selection
       .transition()
@@ -115,7 +126,7 @@ export class ForceDirectedGraph {
       .attr('stroke', (d: any) => d.data.name.includes('.') ? '#0099ff' : '#000')
   }
 
-  update () {
+  update (): void {
     this.simulation.nodes(this.nodes)
 
     const link = this.linkContainer.selectAll('line')
@@ -151,7 +162,7 @@ export class ForceDirectedGraph {
 }
 
 const drag = (simulation: Simulation<HierarchyPointNode<Tree>, HierarchyPointLink<Tree>>): any => {
-  function dragStarted (event: any) {
+  const dragStarted = (event: any): void => {
     if (!event.active) {
       simulation.alphaTarget(0.3).restart()
     }
@@ -159,12 +170,12 @@ const drag = (simulation: Simulation<HierarchyPointNode<Tree>, HierarchyPointLin
     event.subject.fy = event.subject.y
   }
 
-  function dragged (event: any) {
+  const dragged = (event: any): void => {
     event.subject.fx = event.x
     event.subject.fy = event.y
   }
 
-  function dragEnded (event: any) {
+  const dragEnded = (event: any): void => {
     if (!event.active) {
       simulation.alphaTarget(0)
     }
