@@ -95,7 +95,7 @@ test('commit to existing file updates color', async () => {
   graph.modify('root/a')
 
   // wait fr transition to be completed
-  await new Promise(r => setTimeout(r, 1000))
+  await new Promise(resolve => setTimeout(resolve, 1000))
 
   const circles = graph.nodeContainer.selectChildren().nodes() as SVGAElement[]
   expect(circles).toHaveLength(2)

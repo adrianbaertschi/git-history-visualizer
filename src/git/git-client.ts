@@ -18,7 +18,7 @@ export enum FileOperation {
 }
 
 export const getChanges = async (fs: CallbackFsClient | PromiseFsClient, http: HttpClient, cloneDir?: string): Promise<Commit[]> => {
-  const dir = cloneDir || '/'
+  const dir = cloneDir ?? '/'
   await git.clone({
     fs,
     http,
@@ -26,11 +26,18 @@ export const getChanges = async (fs: CallbackFsClient | PromiseFsClient, http: H
     url: 'https://github.com/adrianbaertschi/mars-rover',
     corsProxy: 'https://cors.isomorphic-git.org'
   })
-  const commits: ReadCommitResult[] = await git.log({ fs, dir })
+  const commits: ReadCommitResult[] = await git.log({
+    fs,
+    dir
+  })
   commits.reverse()
 
   const firstCommit = commits[0]
-  const filesOfFirsCommit = (await git.listFiles({ fs, dir: dir, ref: firstCommit.oid }))
+  const filesOfFirsCommit = (await git.listFiles({
+    fs,
+    dir: dir,
+    ref: firstCommit.oid
+  }))
     .map((filepath: string) => ({
       path: filepath,
       operation: FileOperation.ADD
@@ -46,13 +53,16 @@ export const getChanges = async (fs: CallbackFsClient | PromiseFsClient, http: H
     const currentCommit = commits[i]
     const nextCommit = commits[i + 1]
     const files = await getFileStateChanges(currentCommit.oid, nextCommit.oid, dir, fs)
-    result.push({ commit: nextCommit.oid, files: files })
+    result.push({
+      commit: nextCommit.oid,
+      files: files
+    })
   }
   return result
 }
 
 // https://isomorphic-git.org/docs/en/snippets
-async function getFileStateChanges (commitHash1: string, commitHash2: string, dir: any, fs: CallbackFsClient | PromiseFsClient) {
+async function getFileStateChanges (commitHash1: string, commitHash2: string, dir: any, fs: CallbackFsClient | PromiseFsClient): Promise<FileChange[]> {
   return await git.walk({
     fs,
     dir,

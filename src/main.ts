@@ -17,7 +17,7 @@ import { parseCommit } from './d3/tree-builder'
 
     for (const file of commit.files) {
       console.log(file.operation, file.path)
-      await new Promise(r => setTimeout(r, 500))
+      await new Promise(resolve => setTimeout(resolve, 500))
 
       switch (file.operation) {
         case FileOperation.ADD:
@@ -32,4 +32,9 @@ import { parseCommit } from './d3/tree-builder'
       }
     }
   }
-})()
+})().then(
+  () => {
+  },
+  () => {
+  }
+)
