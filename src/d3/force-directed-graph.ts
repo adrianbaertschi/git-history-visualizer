@@ -9,7 +9,7 @@ import { SimulationNodeDatum } from 'd3-force'
 export class ForceDirectedGraph {
   simulation: d3.Simulation<d3.HierarchyPointNode<Tree>, d3.HierarchyPointLink<Tree>>
   linkContainer: Selection<SVGGElement, unknown, HTMLElement, any>
-  nodeContainer: Selection<SVGGElement, unknown, HTMLElement, any>
+  nodeContainer: Selection<SVGGElement, HierarchyPointNode<Tree>, HTMLElement, any>
   nodes: Array<HierarchyPointNode<Tree>>
   links: Array<HierarchyPointLink<Tree>>
 
@@ -44,7 +44,7 @@ export class ForceDirectedGraph {
         this.update()
       })
 
-    const svg = d3.select('body').append('svg')
+    const svg: Selection<SVGSVGElement, any, HTMLElement, any> = d3.select('body').append('svg')
       .attr('viewBox', `${-width / 2} ${-height / 2} ${width} ${height}`)
 
     this.linkContainer = svg.append('g')
@@ -62,8 +62,12 @@ export class ForceDirectedGraph {
     this.nodes = tree.descendants()
 
     this.simulation = d3.forceSimulation<HierarchyPointNode<Tree>, HierarchyPointLink<Tree>>(this.nodes)
-      .force('link', d3.forceLink<HierarchyPointNode<Tree>, HierarchyPointLink<Tree>>(this.links).id(d => d.id ?? 'missing-id').distance(0).strength(1))
-      .force('charge', d3.forceManyBody().strength(-50))
+      .force('link', d3.forceLink<HierarchyPointNode<Tree>, HierarchyPointLink<Tree>>(this.links)
+        .id(d => d.id ?? 'missing-id')
+        .distance(0)
+        .strength(1))
+      .force('charge', d3.forceManyBody()
+        .strength(-50))
       .force('x', d3.forceX())
       .force('y', d3.forceY())
 
@@ -124,8 +128,8 @@ export class ForceDirectedGraph {
       .transition() // transition back to normal
       .delay(1000)
       .duration(1000)
-      .attr('fill', (d: any) => d.data.name.includes('.') ? '#0099ff' : '#000')
-      .attr('stroke', (d: any) => d.data.name.includes('.') ? '#0099ff' : '#000')
+      .attr('fill', d => d.data.name.includes('.') ? '#0099ff' : '#000')
+      .attr('stroke', d => d.data.name.includes('.') ? '#0099ff' : '#000')
   }
 
   update (): void {
@@ -149,14 +153,14 @@ export class ForceDirectedGraph {
 
     this.simulation.on('tick', () => {
       link
-        .attr('x1', (d: HierarchyPointLink<Tree>) => d.source.x)
-        .attr('y1', (d: HierarchyPointLink<Tree>) => d.source.y)
-        .attr('x2', (d: HierarchyPointLink<Tree>) => d.target.x)
-        .attr('y2', (d: HierarchyPointLink<Tree>) => d.target.y)
+        .attr('x1', d => d.source.x)
+        .attr('y1', d => d.source.y)
+        .attr('x2', d => d.target.x)
+        .attr('y2', d => d.target.y)
 
       node
-        .attr('cx', (d: HierarchyPointNode<Tree>) => d.x)
-        .attr('cy', (d: HierarchyPointNode<Tree>) => d.y)
+        .attr('cx', d => d.x)
+        .attr('cy', d => d.y)
     })
 
     this.simulation.alphaTarget(0.3).restart()
