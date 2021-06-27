@@ -5,25 +5,74 @@
 import { Tree } from './tree-builder'
 import { ForceDirectedGraph } from './force-directed-graph'
 
-test('render root with one child', () => {
-  const tree: Tree = {
-    name: 'root',
-    path: 'root',
-    children: [{
-      name: 'a',
-      path: 'root/a',
-      children: []
-    }]
-  }
-  const graph = new ForceDirectedGraph(tree)
+describe('Operations with simple graph', () => {
+  let graph: ForceDirectedGraph
+  beforeEach(() => {
+    const data: Tree = {
+      name: 'root',
+      path: 'root',
+      children: [{
+        name: 'a',
+        path: 'root/a',
+        children: []
+      }]
+    }
+    graph = new ForceDirectedGraph(data)
+  })
 
-  expect(graph.nodes.length).toBe(2)
-  expect(graph.nodes[0].data.name).toBe('root')
-  expect(graph.nodes[1].data.name).toBe('a')
+  test('render root with one child', () => {
+    expect(graph.nodes.length).toBe(2)
+    expect(graph.nodes[0].data.name).toBe('root')
+    expect(graph.nodes[1].data.name).toBe('a')
 
-  expect(graph.links.length).toBe(1)
-  expect(graph.links[0].source.data.name).toBe('root')
-  expect(graph.links[0].target.data.name).toBe('a')
+    expect(graph.links.length).toBe(1)
+    expect(graph.links[0].source.data.name).toBe('root')
+    expect(graph.links[0].target.data.name).toBe('a')
+  })
+
+  test('remove non-existing leaf throws error', () => {
+    expect(() =>
+      graph.remove('root/z')
+    ).toThrow('Path root/z not found')
+  })
+
+  test('add node to root', () => {
+    graph.addNode('root/a/b')
+
+    expect(graph.nodes).toHaveLength(3)
+    expect(graph.nodes[0].data.name).toBe('root')
+    expect(graph.nodes[1].data.name).toBe('a')
+    expect(graph.nodes[2].data.name).toBe('b')
+
+    expect(graph.links).toHaveLength(2)
+    expect(graph.links[0].source.data.name).toBe('root')
+    expect(graph.links[0].target.data.name).toBe('a')
+  })
+
+  test('add node to non-existing parent throws error', () => {
+    expect(() => {
+      graph.addNode('bla/a')
+    }).toThrow('Parent not found for bla/a: bla')
+  })
+
+  test('modify existing file updates color', async () => {
+    graph.modify('root/a')
+
+    // wait for transition to be completed
+    await new Promise(resolve => setTimeout(resolve, 1000))
+
+    const circles = graph.nodeContainer.selectChildren().nodes() as SVGAElement[]
+    expect(circles).toHaveLength(2)
+
+    expect(circles[0].getAttribute('fill')).toBe('#000')
+    expect(circles[1].getAttribute('fill')).toBe('rgb(255, 0, 0)')
+  })
+
+  test('modify non-existing file throws error', async () => {
+    expect(() => {
+      graph.modify('root/b')
+    }).toThrow('Node root/b not found')
+  })
 })
 
 test('remove a leaf node', () => {
@@ -62,96 +111,4 @@ test('remove a leaf node', () => {
   expect(graph.nodes[2].data.name).toBe('c')
 
   expect(graph.links).toHaveLength(2)
-})
-
-test('remove non-existing leaf throws error', () => {
-  const tree: Tree = {
-    name: 'root',
-    path: 'root',
-    children: [{
-      name: 'a',
-      path: 'root/a'
-    }]
-  }
-
-  const graph = new ForceDirectedGraph(tree)
-
-  expect(() =>
-    graph.remove('root/z')
-  ).toThrow('Path root/z not found')
-})
-
-test('add node to root', () => {
-  const tree: Tree = {
-    name: 'root',
-    path: 'root',
-    children: [{
-      name: 'a',
-      path: 'root/a',
-      children: []
-    }]
-  }
-  const graph = new ForceDirectedGraph(tree)
-  graph.addNode('root/a/b')
-
-  expect(graph.nodes).toHaveLength(3)
-  expect(graph.nodes[0].data.name).toBe('root')
-  expect(graph.nodes[1].data.name).toBe('a')
-  expect(graph.nodes[2].data.name).toBe('b')
-
-  expect(graph.links).toHaveLength(2)
-  expect(graph.links[0].source.data.name).toBe('root')
-  expect(graph.links[0].target.data.name).toBe('a')
-})
-
-test('add node to non-existing parent throws error', () => {
-  const tree: Tree = {
-    name: 'root',
-    path: 'root'
-  }
-  const graph = new ForceDirectedGraph(tree)
-
-  expect(() => {
-    graph.addNode('bla/a')
-  }).toThrow('Parent not found for bla/a: bla')
-})
-
-test('commit to existing file updates color', async () => {
-  const tree: Tree = {
-    name: 'root',
-    path: 'root',
-    children: [{
-      name: 'a',
-      path: 'root/a',
-      children: []
-    }]
-  }
-  const graph = new ForceDirectedGraph(tree)
-  graph.modify('root/a')
-
-  // wait fr transition to be completed
-  await new Promise(resolve => setTimeout(resolve, 1000))
-
-  const circles = graph.nodeContainer.selectChildren().nodes() as SVGAElement[]
-  expect(circles).toHaveLength(2)
-
-  expect(circles[0].getAttribute('fill')).toBe('#000')
-  expect(circles[1].getAttribute('fill')).toBe('rgb(255, 0, 0)')
-})
-
-test('modify non-existing file throws error', async () => {
-  const tree: Tree = {
-    name: 'root',
-    path: 'root',
-    children: [{
-      name: 'a',
-      path: 'root/a',
-      children: []
-    }]
-  }
-
-  const graph = new ForceDirectedGraph(tree)
-  expect(() => {
-    graph.modify('root/b')
-  }).toThrow('Node root/b not found')
 })
