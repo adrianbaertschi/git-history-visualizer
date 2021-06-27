@@ -80,10 +80,12 @@ Introduced enum to model file change operations (ADD, REMOVE, MODIFY). Played ar
 to "flash" the nodes quickly. Learned about special characters in CSS selectors and `CSS.escape()`.
 
 ##### 26.06.2021
+
 Added eslint config and started fixing issues. Will have to look into organizing jest test to make it more readable.
 
 ##### 26.06.2021
-Replace enum with union type, refactor graph test and reuse setup code
+
+Replace enum with union type, refactor graph test and reuse setup code, refactor git client to class
 
 ### Links
 
