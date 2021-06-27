@@ -1,5 +1,5 @@
 import { ForceDirectedGraph } from './d3/force-directed-graph'
-import { FileOperation, getChanges } from './git/git-client'
+import { getChanges } from './git/git-client'
 import * as LightningFS from '@isomorphic-git/lightning-fs'
 import http from 'isomorphic-git/http/web'
 import { parseCommit } from './d3/tree-builder'
@@ -20,13 +20,13 @@ import { parseCommit } from './d3/tree-builder'
       await new Promise(resolve => setTimeout(resolve, 500))
 
       switch (file.operation) {
-        case FileOperation.ADD:
+        case 'ADD':
           graph.addNode(`root/${file.path}`)
           break
-        case FileOperation.REMOVE:
+        case 'REMOVE':
           graph.remove(`root/${file.path}`)
           break
-        case FileOperation.MODIFY:
+        case 'MODIFY':
           graph.modify(`root/${file.path}`)
           break
       }

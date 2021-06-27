@@ -79,6 +79,10 @@ Added the full path to every `Tree` object to have a unique id.
 Introduced enum to model file change operations (ADD, REMOVE, MODIFY). Played around with the modify events, idea is
 to "flash" the nodes quickly. Learned about special characters in CSS selectors and `CSS.escape()`.
 
+##### 26.06.2021
+
+Added eslint config and started fixing issues. Will have to look into organizing jest test to make it more readable.
+
 ### Links
 
 - https://gource.io/

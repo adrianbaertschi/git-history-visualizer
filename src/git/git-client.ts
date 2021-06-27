@@ -11,11 +11,7 @@ export interface FileChange {
   operation: FileOperation
 }
 
-export enum FileOperation {
-  ADD = 'ADD',
-  REMOVE = 'REMOVE',
-  MODIFY = 'MODIFY'
-}
+export type FileOperation = 'ADD' | 'REMOVE' | 'MODIFY'
 
 export const getChanges = async (fs: CallbackFsClient | PromiseFsClient, http: HttpClient, cloneDir?: string): Promise<Commit[]> => {
   const dir = cloneDir ?? '/'
@@ -33,20 +29,19 @@ export const getChanges = async (fs: CallbackFsClient | PromiseFsClient, http: H
   commits.reverse()
 
   const firstCommit = commits[0]
-  const filesOfFirsCommit = (await git.listFiles({
+  const filesOfFirstCommit: FileChange[] = (await git.listFiles({
     fs,
     dir: dir,
     ref: firstCommit.oid
+  })).map((filepath: string) => ({
+    path: filepath,
+    operation: 'ADD'
   }))
-    .map((filepath: string) => ({
-      path: filepath,
-      operation: FileOperation.ADD
-    }))
 
   const result: Commit[] = []
   result.push({
     commit: firstCommit.oid,
-    files: filesOfFirsCommit
+    files: filesOfFirstCommit
   })
 
   for (let i = 0; i < commits.length - 1; i++) {
@@ -75,14 +70,14 @@ async function getFileStateChanges (commitHash1: string, commitHash2: string, di
       if (A == null) {
         return {
           path: filepath,
-          operation: FileOperation.ADD
+          operation: 'ADD'
         }
       }
 
       if (B == null) {
         return {
           path: filepath,
-          operation: FileOperation.REMOVE
+          operation: 'REMOVE'
         }
       }
 
@@ -101,19 +96,19 @@ async function getFileStateChanges (commitHash1: string, commitHash2: string, di
       if (oidA !== oidB) {
         return {
           path: filepath,
-          operation: FileOperation.MODIFY
+          operation: 'MODIFY'
         }
       }
       if (oidA === undefined) {
         return {
           path: filepath,
-          operation: FileOperation.ADD
+          operation: 'ADD'
         }
       }
       if (oidB === undefined) {
         return {
           path: filepath,
-          operation: FileOperation.REMOVE
+          operation: 'REMOVE'
         }
       }
     }
