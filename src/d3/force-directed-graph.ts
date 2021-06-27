@@ -23,27 +23,6 @@ export class ForceDirectedGraph {
     const width = 660 - margin.left - margin.right
     const height = 500 - margin.top - margin.bottom
 
-    d3.select('body').append('button').text('Add')
-      .on('click', () => {
-        const nodeToInsert: HierarchyPointNode<Tree> = Object.assign({}, this.nodes[1])
-        nodeToInsert.data.name = new Date().getTime().toString()
-        this.links.push({
-          source: tree,
-          target: nodeToInsert
-        })
-        this.nodes.push(nodeToInsert)
-
-        this.update()
-      })
-
-    d3.select('body').append('button').text('Remove')
-      .on('click', () => {
-        this.nodes.pop()
-        this.links.pop()
-
-        this.update()
-      })
-
     const svg: Selection<SVGSVGElement, any, HTMLElement, any> = d3.select('body').append('svg')
       .attr('viewBox', `${-width / 2} ${-height / 2} ${width} ${height}`)
 
