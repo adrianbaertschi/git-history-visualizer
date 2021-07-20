@@ -14,14 +14,8 @@ export class ForceDirectedGraph {
   links: Array<HierarchyPointLink<Tree>>
 
   constructor (data: Tree) {
-    const margin = {
-      top: 20,
-      right: 120,
-      bottom: 30,
-      left: 90
-    }
-    const width = 660 - margin.left - margin.right
-    const height = 500 - margin.top - margin.bottom
+    const width = 450
+    const height = 450
 
     const svg: Selection<SVGSVGElement, any, HTMLElement, any> = d3.select('body').append('svg')
       .attr('viewBox', `${-width / 2} ${-height / 2} ${width} ${height}`)
@@ -47,6 +41,7 @@ export class ForceDirectedGraph {
         .strength(1))
       .force('charge', d3.forceManyBody()
         .strength(-50))
+      .force('center', d3.forceCenter())
       .force('x', d3.forceX())
       .force('y', d3.forceY())
 
@@ -109,6 +104,8 @@ export class ForceDirectedGraph {
       .duration(1000)
       .attr('fill', d => d.data.name.includes('.') ? '#0099ff' : '#000')
       .attr('stroke', d => d.data.name.includes('.') ? '#0099ff' : '#000')
+
+    this.update()
   }
 
   update (): void {

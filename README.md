@@ -14,13 +14,18 @@ Run it:
 - [x] Create a visual graph from tree
 - [x] Parse git commit to tree
 - [x] Generate series of trees from git log
-- [ ] Create animation from tree changes
+- [x] Create animation from tree changes
     - [x] Removal
     - [x] Add
     - [x] Modify
 - [ ] UI
     - [ ] Input for repo url
-    - [ ] Timeline/log?
+    - [ ] Timeline/log
+    - [ ] Statistics (no. of files per type)
+- [ ] Graph
+    - [ ] Blur effect
+    - [ ] Color by file type
+    - [ ] Cool down faster
 
 https://isomorphic-git.org/docs/en/onProgress
 
