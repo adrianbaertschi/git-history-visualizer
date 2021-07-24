@@ -92,6 +92,13 @@ Added eslint config and started fixing issues. Will have to look into organizing
 
 Replace enum with union type, refactor graph test and reuse setup code, refactor git client to class
 
+#### 24.07.2021
+
+Trying to add the log component and thought Vue.js is a good lib. Fiddled around with Webpack because Vue 3 would
+abstract that away with Vue CLI. Got it working with hints
+from [here](https://github.com/microsoft/TypeScript-Vue-Starter). Learned
+about [Single File Components](https://v3.vuejs.org/guide/single-file-component.html#single-file-components) in Vue.js.
+
 ### Links
 
 - https://gource.io/

@@ -17,7 +17,7 @@ export class ForceDirectedGraph {
     const width = 450
     const height = 450
 
-    const svg: Selection<SVGSVGElement, any, HTMLElement, any> = d3.select('body').append('svg')
+    const svg: Selection<SVGSVGElement, any, HTMLElement, any> = d3.select('#graph').append('svg')
       .attr('viewBox', `${-width / 2} ${-height / 2} ${width} ${height}`)
 
     this.linkContainer = svg.append('g')
