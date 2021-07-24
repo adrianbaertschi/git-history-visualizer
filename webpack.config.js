@@ -20,6 +20,15 @@ module.exports = {
       {
         test: /\.vue$/,
         use: 'vue-loader'
+      },
+      // this will apply to both plain `.css` files
+      // AND `<style>` blocks in `.vue` files
+      {
+        test: /\.css$/,
+        use: [
+          'vue-style-loader',
+          'css-loader'
+        ]
       }
     ]
   },

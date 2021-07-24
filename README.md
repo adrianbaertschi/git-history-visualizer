@@ -98,7 +98,7 @@ Trying to add the log component and thought Vue.js is a good lib. Fiddled around
 abstract that away with Vue CLI. Got it working with hints
 from [here](https://github.com/microsoft/TypeScript-Vue-Starter). Learned
 about [Single File Components](https://v3.vuejs.org/guide/single-file-component.html#single-file-components) in Vue.js.
-
+Adding replay logic from main.ts into Vue component. Adding another component to show the changes as text.
 ### Links
 
 - https://gource.io/
