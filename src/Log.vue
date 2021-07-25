@@ -1,13 +1,23 @@
 <template>
   <div id="console">
-    <div v-for="change in changes"> {{ change }}</div>
+    <div
+      v-for="change in changes"
+      :key="change.commit"
+    >
+      {{ change }}
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: { changes: Array },
   name: 'Log',
+  props: {
+    changes: {
+      type: Array,
+      default: () => []
+    }
+  }
 }
 </script>
 

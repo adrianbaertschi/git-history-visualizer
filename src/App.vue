@@ -1,5 +1,5 @@
 <template>
-  <Log v-bind:changes="commitLog"></Log>
+  <Log :changes="commitLog" />
 </template>
 
 <script lang="ts">
@@ -51,7 +51,6 @@ export default defineComponent({
     }
   }
 })
-
 
 </script>
 
