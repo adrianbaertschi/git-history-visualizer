@@ -9,6 +9,7 @@ export interface Commit {
 export interface FileChange {
   path: string
   operation: FileOperation
+  isDirectory: boolean
 }
 
 export type FileOperation = 'ADD' | 'REMOVE' | 'MODIFY'
@@ -49,7 +50,8 @@ export class GitRepo {
       ref: firstCommit.oid
     })).map((filepath: string) => ({
       path: filepath,
-      operation: 'ADD'
+      operation: 'ADD',
+      isDirectory: false
     }))
 
     const result: Commit[] = []
@@ -85,14 +87,16 @@ async function getFileStateChanges (commitHash1: string, commitHash2: string, di
       if (A == null) {
         return {
           path: filepath,
-          operation: 'ADD'
+          operation: 'ADD',
+          isDirectory: await B.type() === 'tree'
         }
       }
 
       if (B == null) {
         return {
           path: filepath,
-          operation: 'REMOVE'
+          operation: 'REMOVE',
+          isDirectory: await A.type() === 'tree'
         }
       }
 
@@ -111,19 +115,22 @@ async function getFileStateChanges (commitHash1: string, commitHash2: string, di
       if (oidA !== oidB) {
         return {
           path: filepath,
-          operation: 'MODIFY'
+          operation: 'MODIFY',
+          isDirectory: false
         }
       }
       if (oidA === undefined) {
         return {
           path: filepath,
-          operation: 'ADD'
+          operation: 'ADD',
+          isDirectory: false
         }
       }
       if (oidB === undefined) {
         return {
           path: filepath,
-          operation: 'REMOVE'
+          operation: 'REMOVE',
+          isDirectory: false
         }
       }
     }
