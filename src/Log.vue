@@ -1,10 +1,11 @@
 <template>
+  <h2>Log</h2>
   <div id="console">
     <div
       v-for="change in changes"
-      :key="change.commit"
+      :key="change.path"
     >
-      {{ change }}
+      {{ change.operation }} {{ change.path }}
     </div>
   </div>
 </template>
