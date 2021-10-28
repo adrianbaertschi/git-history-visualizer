@@ -1,7 +1,8 @@
 <template>
   <h2>Input</h2>
   <input
-    v-model="url"
+    v-model="
+      /* eslint-disable vue/no-mutating-props */ url"
     type="url"
     size="60"
   >
@@ -14,7 +15,10 @@
 export default {
   name: 'RepositoryInput',
   props: {
-    url: String
+    url: {
+      type: String,
+      required: true
+    }
   },
   emits: ['start'],
   methods: {

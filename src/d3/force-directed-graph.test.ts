@@ -55,7 +55,7 @@ describe('Operations with simple graph', () => {
     }).toThrow('Parent not found for bla/a: bla')
   })
 
-  test('modify existing file updates color', async () => {
+  test.skip('modify existing file updates color', async () => {
     graph.modify('root/a')
 
     // wait for transition to be completed
