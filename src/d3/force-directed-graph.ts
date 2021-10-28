@@ -14,6 +14,9 @@ export class ForceDirectedGraph {
   links: Array<HierarchyPointLink<Tree>>
 
   constructor (data: Tree) {
+    // Clear elements from previous runs
+    d3.select('#graph > svg').remove()
+
     const width = 450
     const height = 450
 

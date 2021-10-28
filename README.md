@@ -19,12 +19,14 @@ Run it:
     - [x] Add
     - [x] Modify
 - [ ] UI
-    - [ ] Input for repo url
-    - [ ] Timeline/log
-    - [ ] Statistics (no. of files per type)
+    - [x] Input for repo url
+    - [ ] Timeline/progress bar
+    - [X] Statistics (no. of files per type)
+    - [ ] Loading screen
+    - [ ] General styling
 - [ ] Graph
     - [ ] Blur effect
-    - [ ] Color by file type
+    - [ ] Color nodes by file type
     - [ ] Cool down faster
 
 https://isomorphic-git.org/docs/en/onProgress
@@ -99,6 +101,14 @@ abstract that away with Vue CLI. Got it working with hints
 from [here](https://github.com/microsoft/TypeScript-Vue-Starter). Learned
 about [Single File Components](https://v3.vuejs.org/guide/single-file-component.html#single-file-components) in Vue.js.
 Adding replay logic from main.ts into Vue component. Adding another component to show the changes as text.
+
+#### 28.10.2021
+
+Adding input field to enter the url of the git repo. Got some errors when cloning the second repo, so will do a clean on
+the LightningFs object before the run. Learned about `v-modal` of Vue.js. Still got lint errors
+because `vue/no-mutating-props`, not sure how to fix.
+Added some logic and default values to make multiple runs possible.
+
 ### Links
 
 - https://gource.io/
