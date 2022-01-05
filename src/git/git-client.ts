@@ -1,5 +1,12 @@
 import * as git from 'isomorphic-git'
-import { CallbackFsClient, HttpClient, PromiseFsClient, ReadCommitResult, WalkerEntry } from 'isomorphic-git'
+import {
+  CallbackFsClient,
+  HttpClient,
+  ProgressCallback,
+  PromiseFsClient,
+  ReadCommitResult,
+  WalkerEntry
+} from 'isomorphic-git'
 
 export interface Commit {
   commit: string
@@ -18,11 +25,13 @@ export class GitRepo {
   private readonly fs: CallbackFsClient | PromiseFsClient
   private readonly http: HttpClient
   private readonly dir: string
+  private readonly onProgress: ProgressCallback | undefined
 
-  constructor (fs: CallbackFsClient | PromiseFsClient, http: HttpClient, cloneDir?: string) {
+  constructor (fs: CallbackFsClient | PromiseFsClient, http: HttpClient, cloneDir?: string, onProgress?: ProgressCallback) {
     this.fs = fs
     this.http = http
     this.dir = cloneDir ?? '/'
+    this.onProgress = onProgress
   }
 
   async clone (url: string): Promise<GitRepo> {
@@ -31,7 +40,8 @@ export class GitRepo {
       http: this.http,
       dir: this.dir,
       url: url,
-      corsProxy: 'https://cors.isomorphic-git.org'
+      corsProxy: 'https://cors.isomorphic-git.org',
+      onProgress: this.onProgress
     })
     return this
   }

@@ -9,11 +9,15 @@
   <Stats
     :file-changes="fileChangeLog"
   />
+  <Progress
+    v-bind="progress"
+  />
 </template>
 
 <script lang="ts">
 
 import Log from './Log.vue'
+import Progress from './Progress.vue'
 import { FileChange, GitRepo } from './git/git-client'
 import http from 'isomorphic-git/http/web'
 import { defineComponent } from 'vue'
@@ -23,17 +27,20 @@ import Stats from './Stats.vue'
 import RepositoryInput from './RepositoryInput.vue'
 import * as LightningFS from '@isomorphic-git/lightning-fs'
 import { FSBackend } from '@isomorphic-git/lightning-fs'
+import { GitProgressEvent } from 'isomorphic-git'
 
 export default defineComponent({
   components: {
     Stats,
     Log,
-    RepositoryInput
+    RepositoryInput,
+    Progress
   },
   data () {
     return {
       fileChangeLog: [] as FileChange[],
-      repoUrl: 'https://github.com/adrianbaertschi/mars-rover' as String
+      repoUrl: 'https://github.com/adrianbaertschi/mars-rover' as String,
+      progress: undefined as unknown as GitProgressEvent
     }
   },
   methods: {
@@ -49,10 +56,17 @@ export default defineComponent({
         urlauto: false,
         wipe: true
       })
-      const repo = await new GitRepo(fs, http).clone(url)
+
+      const updateProgress = (event: GitProgressEvent) => {
+        this.progress = event
+      }
+
+      const repo = await new GitRepo(fs, http, undefined, updateProgress).clone(url)
       const commits = await repo.log()
       this.fileChangeLog = []
       this.fileChangeLog.unshift(...commits[0].files)
+      this.progress.total = commits.length
+      this.progress.phase = 'Walking through commits'
 
       const initialTree = parseCommit(commits[0])
       const graph = new ForceDirectedGraph(initialTree)
@@ -74,6 +88,7 @@ export default defineComponent({
               break
           }
         }
+        this.progress.loaded = i + 1
       }
     }
   }
