@@ -1,8 +1,7 @@
 <template>
   <h2>Input</h2>
   <input
-    v-model="
-      /* eslint-disable vue/no-mutating-props */ url"
+    v-model="repoUrl"
     type="url"
     size="60"
   >
@@ -21,6 +20,11 @@ export default {
     }
   },
   emits: ['start'],
+  data () {
+    return {
+      repoUrl: this.url // only need to duplicate this prop to data to avoid 'vue/no-mutating-props' linting error
+    }
+  },
   methods: {
     start () {
       this.$emit('start', this.url)
