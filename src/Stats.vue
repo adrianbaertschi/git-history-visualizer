@@ -5,7 +5,7 @@
       v-for="entry in numberOfFilesPerType"
       :key="entry.extension"
     >
-      {{ entry.extension }} : {{ entry.count }}
+      {{ entry.extension }}: {{ entry.count }}
     </li>
   </ul>
 </template>
@@ -45,9 +45,9 @@ export default defineComponent({
         new Map()
       )
 
-      return [...sums].map(([k, v]) => ({
-        extension: k,
-        count: v
+      return Array.from(sums, ([extension, count]) => ({
+        extension,
+        count
       })).sort((a, b) => b.count - a.count)
     }
   }
