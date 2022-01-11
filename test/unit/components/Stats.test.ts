@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import Stats from './Stats.vue'
+import Stats from '../../../src/components/Stats.vue'
 
 describe('Stats', () => {
   it('should render stats of one file', async () => {

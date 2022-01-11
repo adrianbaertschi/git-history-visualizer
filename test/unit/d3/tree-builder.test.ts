@@ -1,4 +1,4 @@
-import { parseFiles, Tree } from './tree-builder'
+import { parseFiles, Tree } from '../../../src/d3/tree-builder'
 
 test('empty list', () => {
   const s = parseFiles([])

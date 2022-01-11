@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { FileChange } from './git/git-client'
+import { FileChange } from '../git/git-client'
 
 interface Occurrence {
   extension: string,

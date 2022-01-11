@@ -2,8 +2,8 @@
  * @jest-environment jsdom
  */
 
-import { Tree } from './tree-builder'
-import { ForceDirectedGraph } from './force-directed-graph'
+import { Tree } from '../../../src/d3/tree-builder'
+import { ForceDirectedGraph } from '../../../src/d3/force-directed-graph'
 
 describe('Operations with simple graph', () => {
   let graph: ForceDirectedGraph

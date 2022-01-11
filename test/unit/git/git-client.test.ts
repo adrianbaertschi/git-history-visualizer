@@ -1,4 +1,4 @@
-import { Commit, GitRepo } from './git-client'
+import { Commit, GitRepo } from '../../../src/git/git-client'
 import * as fs from 'fs'
 import * as http from 'isomorphic-git/http/node'
 import * as path from 'path'
