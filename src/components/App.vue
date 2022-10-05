@@ -65,7 +65,9 @@ export default defineComponent({
       const commits = await repo.log()
       this.fileChangeLog = []
       this.fileChangeLog.unshift(...commits[0].files)
-      this.progress.total = commits.length
+
+      this.progress.total = commits.map(value => value.files.length).reduce((a, b) => a + b, 0) - commits[0].files.length
+      this.progress.loaded = 0
       this.progress.phase = 'Walking through commits'
 
       const initialTree = parseCommit(commits[0])
@@ -74,6 +76,7 @@ export default defineComponent({
         const commit = commits[i]
         for (const file of commit.files) {
           this.fileChangeLog.unshift(file)
+          this.progress.loaded++
           await new Promise(resolve => setTimeout(resolve, 500))
 
           switch (file.operation) {
@@ -88,7 +91,6 @@ export default defineComponent({
               break
           }
         }
-        this.progress.loaded = i + 1
       }
     }
   }
