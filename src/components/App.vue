@@ -3,14 +3,14 @@
     :url="repoUrl"
     @start="start"
   />
+  <Progress
+    v-bind="progress"
+  />
   <Log
     :changes="fileChangeLog"
   />
   <Stats
     :file-changes="fileChangeLog"
-  />
-  <Progress
-    v-bind="progress"
   />
 </template>
 

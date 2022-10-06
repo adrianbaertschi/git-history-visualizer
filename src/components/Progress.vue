@@ -2,6 +2,10 @@
   <h2>Progress</h2>
   <div v-if="total">
     {{ phase }} {{ Math.round(loaded / total * 100) }}%
+    <progress
+      :value="loaded"
+      :max="total"
+    />
   </div>
   <div v-else>
     {{ phase }} {{ loaded }}
