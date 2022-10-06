@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     start () {
-      this.$emit('start', this.url)
+      this.$emit('start', this.repoUrl)
     }
   }
 }
