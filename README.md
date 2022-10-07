@@ -3,8 +3,6 @@
 Pet project to improve my web development skills by re-creating something like [Gource](https://gource.io/) in the
 browser.
 
-Deployed version: https://zingy-rabanadas-19a36e.netlify.app
-
 Run it locally:
 
 - `npm install`
