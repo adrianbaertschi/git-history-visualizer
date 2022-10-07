@@ -3,7 +3,7 @@
 Pet project to improve my web development skills by re-creating something like [Gource](https://gource.io/) in the
 browser.
 
-Deployed version: https://melodic-entremet-655b07.netlify.app/
+Deployed version: https://git-history-visualizer.netlify.app
 
 Run it locally:
 
