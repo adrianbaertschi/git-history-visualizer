@@ -41,7 +41,8 @@ export class GitRepo {
       dir: this.dir,
       url: url,
       corsProxy: 'https://cors.isomorphic-git.org',
-      onProgress: this.onProgress
+      onProgress: this.onProgress,
+      singleBranch: true
     })
     return this
   }
