@@ -36,4 +36,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NETLIFY_CMD: npm run build
-          NETLIFY_DIR: dist
+          NETLIFY_DIR: dist/
