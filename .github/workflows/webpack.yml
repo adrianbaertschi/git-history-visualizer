@@ -29,6 +29,7 @@ jobs:
         npm run lint
 
   publish:
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
