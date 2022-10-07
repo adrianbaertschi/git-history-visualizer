@@ -3,10 +3,13 @@
 Pet project to improve my web development skills by re-creating something like [Gource](https://gource.io/) in the
 browser.
 
-Run it:
+Deployed version: https://zingy-rabanadas-19a36e.netlify.app
 
+Run it locally:
+
+- `npm install`
 - `npm run start`
-- http://localhost:8080
+- Go to http://localhost:8080
 
 ## Tasks
 
@@ -21,15 +24,19 @@ Run it:
 - [ ] UI
     - [x] Input for repo url
     - [ ] Timeline/progress bar
-    - [X] Statistics (no. of files per type)
-    - [ ] Loading screen
+    - [x] Statistics (no. of files per type)
+    - [x] Loading screen
     - [ ] General styling
+    - [ ] Reset
+    - [ ] Error handling input
 - [ ] Graph
     - [ ] Blur effect
     - [ ] Color nodes by file type
     - [ ] Cool down faster
+    - [ ] Zoom, fullscreen, etc.
+- [x] Deployment
+- [ ] Get rid of special handling of first commit
 
-https://isomorphic-git.org/docs/en/onProgress
 
 ### Journal
 
@@ -106,8 +113,16 @@ Adding replay logic from main.ts into Vue component. Adding another component to
 
 Adding input field to enter the url of the git repo. Got some errors when cloning the second repo, so will do a clean on
 the LightningFs object before the run. Learned about `v-modal` of Vue.js. Still got lint errors
-because `vue/no-mutating-props`, not sure how to fix.
-Added some logic and default values to make multiple runs possible.
+because `vue/no-mutating-props`, not sure how to fix. Added some logic and default values to make multiple runs
+possible.
+
+#### 05.01.2022
+Add component that show progress of cloning and walking through commits (https://isomorphic-git.org/docs/en/onProgress)
+
+#### 11.01.2022
+
+Component testing. Created demo project witch Vue CLI. This would handle a lot of the config. Decided against it to have
+fewer layers of abstraction. Use https://next.vue-test-utils.vuejs.org for Vue.js 3 compatibility.
 
 ### Links
 
